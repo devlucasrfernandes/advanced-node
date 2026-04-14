@@ -1,6 +1,6 @@
 {
   "*.ts": [
-    "npm run lin:fix",
-    "npm run test:staged"
+    "npm run lint:fix",
+    "prettier --write"
   ]
 }

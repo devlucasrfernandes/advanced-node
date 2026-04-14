@@ -26,6 +26,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-namespace': 'off',
   },
 
   overrides: [
