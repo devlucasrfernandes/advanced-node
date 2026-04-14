@@ -26,7 +26,7 @@
     "noEmit": true, // Não gera arquivos (usado apenas para lint/IDE).
 
     /* --- Node.js Environment --- */
-    "types": ["node"] // Tipos globais para módulos nativos (ex: path).
+    "types": ["node", "jest"] // Tipos globais para módulos nativos (ex: path).
   },
 
   /* --- Scope --- */

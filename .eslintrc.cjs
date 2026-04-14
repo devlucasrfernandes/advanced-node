@@ -15,7 +15,7 @@ module.exports = {
 
   plugins: ['@typescript-eslint'],
 
-  ignorePatterns: ['.eslintrc.cjs', 'dist', 'node_modules'],
+  ignorePatterns: ['.eslintrc.cjs', 'dist', 'node_modules', 'coverage'],
 
   extends: [
     'eslint:recommended',
@@ -32,7 +32,7 @@ module.exports = {
     {
       files: ['*.js'],
       parserOptions: {
-        project: null, // 👈 evita erro em arquivos JS
+        project: null,
       },
     },
   ],
