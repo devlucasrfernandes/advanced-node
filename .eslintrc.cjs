@@ -6,25 +6,34 @@ module.exports = {
     es2022: true,
   },
 
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
 
   parserOptions: {
-    project: "./tsconfig.eslint.json",
-    sourceType: "module",
+    project: './tsconfig.eslint.json',
+    sourceType: 'module',
   },
 
-  plugins: ["@typescript-eslint"],
+  plugins: ['@typescript-eslint'],
 
-  ignorePatterns: [".eslintrc.cjs", "dist", "node_modules"],
+  ignorePatterns: ['.eslintrc.cjs', 'dist', 'node_modules'],
 
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
   ],
 
   rules: {
-    "no-console": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    'no-console': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
-};
+
+  overrides: [
+    {
+      files: ['*.js'],
+      parserOptions: {
+        project: null, // 👈 evita erro em arquivos JS
+      },
+    },
+  ],
+}

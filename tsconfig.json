@@ -1,37 +1,37 @@
 {
   "compilerOptions": {
-    // Diretório de saída dos arquivos compilados
-    "outDir": "dist",
-    // Diretório raiz do projeto
-    "rootDir": "src",
-    // Versão do JavaScript gerado
-    "target": "es2022",
-    // Gera arquivos .map para debug
-    "sourceMap": true,
-    // Ignora checagem de libs (melhora performance)
-    "skipLibCheck": true,
-    // Força consistência de maiúsculas/minúsculas nos imports
-    "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
-    //import de pasta diretamente
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "types": ["node"],
-    "baseUrl": "src",
+    /* --- Output & Pathing --- */
+    "outDir": "dist", // Destino dos arquivos compilados.
+    "rootDir": "src", // Pasta raiz do código fonte.
+    "baseUrl": ".", // Base para caminhos não-relativos.
     "paths": {
-      "@/*": ["*"],
-      "@/tests/*": ["../tests/*"]
+      // Atalhos (aliases) de pastas.
+      "@/*": ["src/*"],
+      "@/tests/*": ["tests/*"]
     },
-    //Atalho para habilitar varias propriedades ao mesmo tempo
-    "strict": true,
 
-    // 🔥 necessário para ESLint
-    "noEmit": true,
+    /* --- Compilation Target --- */
+    "target": "es2022", // Versão do JavaScript de saída.
+    "module": "commonjs", // Sistema de módulos (Node padrão).
+    "moduleResolution": "node10", // Como o TS busca módulos no Node.
 
-    // 🔥 performance
-    "incremental": true,
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo"
+    /* --- Modernization & Compatibility --- */
+    "ignoreDeprecations": "6.0", // Ignora avisos de recursos obsoletos no TS 6.
+    "esModuleInterop": true, // Compatibilidade para importar CommonJS como ES6.
+    "forceConsistentCasingInFileNames": true, // Padroniza maiúsculas/minúsculas entre sistemas.
+
+    /* --- Strictness & Safety --- */
+    "strict": true, // Ativa checagem rigorosa de tipos.
+    "skipLibCheck": true, // Pula verificação de bibliotecas externas.
+    "noEmit": true, // Não gera arquivos (usado apenas para lint/IDE).
+
+    /* --- Node.js Environment --- */
+    "types": ["node"] // Tipos globais para módulos nativos (ex: path).
   },
-  "include": ["src", "tests"],
-  "exclude": ["dist", "node_modules"]
+
+  /* --- Scope --- */
+  "include": [
+    "src", // Pasta de código incluída.
+    "tests" // Pasta de testes incluída.
+  ]
 }
