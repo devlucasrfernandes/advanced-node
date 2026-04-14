@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    // Diretório de saída dos arquivos compilados
+    "outDir": "dist",
+    // Diretório raiz do projeto
+    "rootDir": "src",
+    // Versão do JavaScript gerado
+    "target": "es2022",
+    // Gera arquivos .map para debug
+    "sourceMap": true,
+    // Ignora checagem de libs (melhora performance)
+    "skipLibCheck": true,
+    // Força consistência de maiúsculas/minúsculas nos imports
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    //import de pasta diretamente
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "@/tests/*": ["../tests/*"],
+    },
+    //Atalho para habilitar varias propriedades ao mesmo tempo
+    "strict": true,
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "strictPropertyInitialization": true,
+    // "noImplicitAny": true,
+  },
+  // Pasta incluída no projeto
+  "include": ["src"]
+}
