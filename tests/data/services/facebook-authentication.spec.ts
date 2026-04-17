@@ -8,7 +8,7 @@ import { FacebookAuthenticationService } from '@/data/services'
 import { AuthenticationError } from '@/domain/errors'
 import { AccessToken, FacebookAccount } from '@/domain/models'
 
-import { any, mock, MockProxy } from 'jest-mock-extended'
+import { mock, MockProxy } from 'jest-mock-extended'
 
 jest.mock('@/domain/models/facebook-account')
 
@@ -36,7 +36,7 @@ describe('facebookAuthenticationService', () => {
     userAccountRepo.load.mockResolvedValue(undefined)
     userAccountRepo.saveWithFacebook.mockResolvedValue({ id: 'any_account_id' })
     crypto = mock()
-
+    crypto.generateToken.mockResolvedValue('any_generated_token')
     sut = new FacebookAuthenticationService(
       facebookApi,
       userAccountRepo,
@@ -91,5 +91,11 @@ describe('facebookAuthenticationService', () => {
       expirationInMs: AccessToken.expirationInMs,
     })
     expect(crypto.generateToken).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return an AcessToken on sucess', async () => {
+    const authResult = await sut.perform(token)
+
+    expect(authResult).toEqual(new AccessToken('any_generated_token'))
   })
 })
