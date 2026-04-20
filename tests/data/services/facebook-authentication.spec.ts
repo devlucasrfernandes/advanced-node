@@ -20,23 +20,25 @@ describe('facebookAuthenticationService', () => {
   >
   let sut: FacebookAuthenticationService
 
-  const token = {
-    token: 'any_token',
-  }
+  let token: string
 
-  beforeEach(() => {
+  beforeAll(() => {
+    token = 'any_token'
     facebookApi = mock<LoadFacebookUserApi>()
     facebookApi.loadUser.mockResolvedValue({
       facebookId: 'any_fb_id',
       email: 'any_fb_email',
       name: 'any_fb_name',
     })
-
     userAccountRepo = mock()
     userAccountRepo.load.mockResolvedValue(undefined)
     userAccountRepo.saveWithFacebook.mockResolvedValue({ id: 'any_account_id' })
     crypto = mock()
     crypto.generateToken.mockResolvedValue('any_generated_token')
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
     sut = new FacebookAuthenticationService(
       facebookApi,
       userAccountRepo,
@@ -45,22 +47,22 @@ describe('facebookAuthenticationService', () => {
   })
 
   it('should call LoadFacebookUserApi with correct params', async () => {
-    await sut.perform(token)
+    await sut.perform({ token })
 
-    expect(facebookApi.loadUser).toHaveBeenCalledWith(token)
+    expect(facebookApi.loadUser).toHaveBeenCalledWith({ token })
     expect(facebookApi.loadUser).toHaveBeenCalledTimes(1)
   })
 
   it('should return AuthenticationError when LoadFacebookUserApi returns undefined', async () => {
     facebookApi.loadUser.mockResolvedValueOnce(undefined)
 
-    const authResult = await sut.perform(token)
+    const authResult = await sut.perform({ token })
 
     expect(authResult).toEqual(new AuthenticationError())
   })
 
   it('should call LoadUserAccountRepo when LoadFacebookUserApi returns data', async () => {
-    await sut.perform(token)
+    await sut.perform({ token })
 
     expect(userAccountRepo.load).toHaveBeenCalledWith({
       email: 'any_fb_email',
@@ -75,7 +77,7 @@ describe('facebookAuthenticationService', () => {
       () => facebookAccountMock,
     )
 
-    await sut.perform(token)
+    await sut.perform({ token })
 
     expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledWith(
       facebookAccountMock,
@@ -84,7 +86,7 @@ describe('facebookAuthenticationService', () => {
   })
 
   it('should call TokenGenerator with corret params', async () => {
-    await sut.perform(token)
+    await sut.perform({ token })
 
     expect(crypto.generateToken).toHaveBeenCalledWith({
       key: 'any_account_id',
@@ -94,7 +96,7 @@ describe('facebookAuthenticationService', () => {
   })
 
   it('should return an AcessToken on sucess', async () => {
-    const authResult = await sut.perform(token)
+    const authResult = await sut.perform({ token })
 
     expect(authResult).toEqual(new AccessToken('any_generated_token'))
   })
@@ -102,7 +104,7 @@ describe('facebookAuthenticationService', () => {
   it('should rethwo if LoadFacebookUserApi throws', async () => {
     facebookApi.loadUser.mockRejectedValueOnce(new Error('fb_error'))
 
-    const promise = sut.perform(token)
+    const promise = sut.perform({ token })
 
     await expect(promise).rejects.toThrow(new Error('fb_error'))
   })
@@ -110,7 +112,7 @@ describe('facebookAuthenticationService', () => {
   it('should rethwo if LoadUserAccountRepository throws', async () => {
     userAccountRepo.load.mockRejectedValueOnce(new Error('load_error'))
 
-    const promise = sut.perform(token)
+    const promise = sut.perform({ token })
 
     await expect(promise).rejects.toThrow(new Error('load_error'))
   })
@@ -120,7 +122,7 @@ describe('facebookAuthenticationService', () => {
       new Error('save_error'),
     )
 
-    const promise = sut.perform(token)
+    const promise = sut.perform({ token })
 
     await expect(promise).rejects.toThrow(new Error('save_error'))
   })
@@ -128,7 +130,7 @@ describe('facebookAuthenticationService', () => {
   it('should rethwo if TokenGenerator throws', async () => {
     crypto.generateToken.mockRejectedValueOnce(new Error('token_error'))
 
-    const promise = sut.perform(token)
+    const promise = sut.perform({ token })
 
     await expect(promise).rejects.toThrow(new Error('token_error'))
   })
